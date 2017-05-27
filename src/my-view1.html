@@ -1,0 +1,276 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-common.css">
+
+  <link rel="import" href="../bower_components/paper-button/paper-button.html">
+  <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+  <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+  <link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+  <link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+
+  <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+  <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+  <link rel="import" href="../bower_components/iron-icons/image-icons.html">
+  <link rel="import" href="../bower_components/gold-email-input/gold-email-input.html">
+
+  <link rel="import" href="../bower_components/paper-date-picker/paper-date-picker.html">
+  <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+  <link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+  <link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html">
+
+  <link rel="import" href="../bower_components/paper-item/paper-item.html">
+  <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+  <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+  <link rel="import" href="../bower_components/paper-styles/color.html">
+  <link rel="import" href="../bower_components/iron-form/iron-form.html">
+
+<dom-module id="my-view1">
+  <template>
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      #dobInput {
+        display: block;
+        color: green;
+        width: 200px;
+      }
+
+    </style>
+
+    <div class="card">
+
+      <form  is="iron-form"  method="get" action="/" id="basic">
+          <paper-input name="name" label="Name" required error-message="Name is required" noLabelFloat=true></paper-input>
+          <paper-input label="Email Id" id="email1" name="email1" required error-message="Enter valid email"
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"  on-blur ="validateEmail" >
+            <iron-icon icon="mail" prefix></iron-icon>
+            <!-- <div suffix>@gmail.com</div> -->
+            <paper-icon-button suffix onclick="clearEmail1()" icon="clear" alt="clear" title="clear">
+            </paper-icon-button>
+          </paper-input>
+
+          <paper-input label="Re-type email" id="email2" name="email2" required error-message="email does not match" on-blur ="validateEmail">
+            <iron-icon icon="mail" prefix></iron-icon>
+            <paper-icon-button suffix onclick="clearEmail2()" icon="clear" alt="clear" title="clear">
+            </paper-icon-button>
+          </paper-input>
+
+          <br>
+
+          <custom-validator id="passwordMtacher" validator-name="password-matcher"></custom-validator>
+
+          <paper-input label="Password" required  id="password" type="password"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,10}"
+            error-message="Invalid Passwword. It has to be 8-10 chrs long, At least 1 Aphabet Upper case and lower case, 1 numver and 1 special character"
+            onBlur="this.validate();" >
+          </paper-input>
+
+          <paper-input label="Re-type Password" required   id="checkPassword"
+            error-message="Password doesn not match"  on-blur="passmatch" type="password">
+          </paper-input>
+
+          <span id="dobInput" >
+            <paper-input label="DOB"  id="dob" name="dob" required
+            pattern="^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$"
+            on-blur="validateDOB" >
+            <paper-icon-button suffix on-click="modalOpen" icon="date-range" alt="dob" title="dob">
+          </paper-input>
+          </span>
+
+          <div id="errorDOB" style="color: red; font-size: 12px "></div> <!-- Example of how to use custom message element <here  it's div> -->
+
+          <paper-dialog id="modal" class="paper-date-picker-dialog"
+            on-iron-overlay-closed="dismissDialog">
+            <paper-date-picker id="picker" date="[[date]]" max-date="{{maxDate}}"></paper-date-picker>
+            <div class="buttons">
+              <paper-button dialog-dismiss>Cancel</paper-button>
+              <paper-button dialog-confirm>OK</paper-button>
+            </div>
+          </paper-dialog>
+          <br>
+
+          <!-- Here in this  element we are calling the inbuilt validate method of the element upon blur event. auto-validate validates -->
+          <paper-input label="Phone Number"  pattern="^(\+\d{1,3}[- ]?)?\d{10}$" id="phone" name="phone"
+            error-message="Please enter valid phone number(e.g. +31-9871234567)"  onBlur="this.validate();" >
+          </paper-input>
+
+          <br>
+
+          <!-- <input type="checkbox" name="food" value="pizza" required > I like pizza<br> -->
+
+          <div>
+          <span style="color: blue; font-size: 12px; width:15%; padding:0px"> How frequently do you want our news letter ?</span> <br>
+          <paper-dropdown-menu  name="news-letter-req"  >
+            <paper-menu class="dropdown-content" selected="0">
+              <paper-item >Never</paper-item>
+              <paper-item >Weekly</paper-item>
+              <paper-item >Monthly</paper-item>
+              <paper-item >Quarterly</paper-item>
+            </paper-menu>
+          </paper-dropdown-menu>
+          </div>
+
+          <paper-checkbox name="policyAccept" value="yes" required label="Accept Terms and Conditions">I accept the terms and conditions of this website</paper-checkbox>
+
+          <br/><br/>
+            <paper-button raised onclick="_submit(event)">Submit</paper-button>
+            <paper-button raised onclick="_reset(event)">Reset</paper-button>
+            <div class="output" id="result"></div>
+          </form>
+
+    </div>
+      </template>
+
+  <script>
+
+    Polymer({
+      is: 'my-view1',
+
+      properties: {
+        pass: {
+          type: String,
+          value: "test"
+        }
+      },
+
+
+      ready: function() {
+
+        //alert('ready called=' + this.$.result);
+        //inside ready/eleent script document.getElementById doesn't work. You should always access the elements like: this.$.<elementId>
+        var  resultDiv = this.$.result;
+        email1Element = this.$.email1;
+        email2Element = this.$.email2; //Define email id as global varible so that it can be accessed inside the clear funtiod defined outside Poymer funtion;
+        this.$.basic.addEventListener('iron-form-submit', function(event) {
+          var queryParam = "";
+          //resultDiv.innerHTML = JSON.stringify(event.detail);
+
+           queryParam +=  "name=" + event.detail.name;
+           queryParam += "&email1=" + event.detail.email1;
+           queryParam += "&dob=" + event.detail.dob;
+           queryParam += "&phone=" + event.detail.phone;
+
+           //Due to some reason form submit doesn't work if action is other page and method get. Quick work around to forward to
+           //the result page -  just to display the entered data,
+           //window.location.href = "http://localhost:8080/form-result?" + queryParam;
+		   window.location.href = "form-result?" + queryParam;
+        });
+
+        this.$.passwordMtacher.validate = this.validatePassword.bind(this);
+
+        this.$.picker.setAttribute("max-date",  new Date()); //example of changing the attribute dynamically
+      },
+
+      validateEmail: function(e) {
+        var email1 = this.$.email1.value;
+
+        if (email1) {
+          this.$.email1.validate();
+        }
+
+        var email2 = this.$.email2.value;
+        if  (email2 != 'undefined' && email2 !="" && (email1 != email2)){
+          this.$.email2.invalid = true;
+        } else {
+          this.$.email2.invalid = false;
+        }
+      },
+
+      passmatch: function(e){
+          var password = encodeURIComponent(this.$.password.value);
+          var confirmPassword = encodeURIComponent(this.$.checkPassword.value);
+          if(password != confirmPassword){
+            //this.$.checkPassword.reportValidity("Password doesn't match");
+            this.$.checkPassword.invalid = true;
+          } else {
+            this.$.checkPassword.invalid = false;
+          }
+        },
+
+        validatePassword: function(value) {
+          //validation code
+          //alert('validaate invoked');
+          console.log("validatePassword");
+          var password = encodeURIComponent(this.$.password.value);
+          var confirmPassword = encodeURIComponent(this.$.checkPassword.value);
+          if(password != confirmPassword){
+            //alert('Password mismatch');
+            return false;
+          }
+          return true;
+        },
+
+        dismissDialog : function(event) {
+          //alert('dismissDialog called');
+          if (event.detail.confirmed) {
+            //alert('confirmed=' + this.$.picker.date.getFullYear());
+            var date =  this.$.picker.date;
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+
+            if(day < 10){
+                day = '0'+day;
+            }
+
+            if(month < 10){
+                month = '0'+ month;
+            }
+            var dobFormatted = day+'/'+month+'/'+year;
+
+            this.$.dob.value = dobFormatted;
+          }
+        },
+
+        modalOpen: function(event) {
+          this.$.modal.open();
+        },
+
+        validateDOB: function(event) {
+          var isValid = this.$.dob.validate();
+          //alert(isValid);
+          if (!isValid) {
+            this.$.errorDOB.innerHTML = "Please enter valid dob(valid format, dd/MM/yyyy or dd-MM-yyyy or dd.MM.yyyy";
+          } else {
+            this.$.errorDOB.innerHTML = "";
+          }
+        }
+
+      });
+
+    function _submit(event) {
+      var form = Polymer.dom(event).localTarget.parentElement;
+      form.submit();
+    }
+    function _reset(event) {
+      var form = Polymer.dom(event).localTarget.parentElement;
+      form.reset();
+      form.querySelector('.output').innerHTML = '';
+    }
+    function clearEmail1() {
+      email1Element.value = '';
+      email1Element.invalid = false;
+   }
+
+   function clearEmail2() {
+     email2Element.value = '';
+  }
+  </script>
+  </dom-module>

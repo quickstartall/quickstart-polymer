@@ -1,0 +1,52 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- Custom css imported -->
+<link rel="import" href="shared-styles.html">
+<dom-module id="my-hello-world">
+  <template>
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+        color: green;
+      }
+    </style>
+
+    <div class="card">
+      <h1> Dear Guest, </h1>
+      <p>Your are cordially welcome to {{companyName}}, [[greetings]] </p>
+      <p>If you want to learn {{topicName}}, this is a good starting point</p>
+	  <p> Here is the link which I referred to create and  customize this sample App:
+	  <a href='https://www.polymer-project.org/2.0/start/toolbox/set-up' target="_blank">Build an App with Toolbox </a> 
+	  </P>
+      <p> Please register for free to our website using the link  <a href="/view1">  Rgistration </a> </p>
+    </div>
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'my-hello-world',
+
+      properties: {
+        greetings: {
+          type: String,
+          value: "You are welcome to the Universe of  elements!"
+        },
+
+        companyName: {
+          type: String,
+          value: "companyName"
+        },
+        topicName: {
+          type: String,
+          value: "topicName"
+        }
+
+      },
+
+    });
+  </script>
+</dom-module>

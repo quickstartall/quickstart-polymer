@@ -1,0 +1,58 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="shared-styles.html">
+<dom-module id="my-form-result">
+  <template>
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div class="card">
+      <h1 style="color:green"> Thank you for registering with us</h1>
+      <p style="font-weight:bold;">Your registration data:</p>
+      <div id="result"></div>
+
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'my-form-result',
+
+    ready : function() {
+      var message = "";
+      var name = getQueryString('name') ;
+      var email = getQueryString('email1') ;
+      var dob = getQueryString('dob') ;
+      var phone = getQueryString('phone') ;;
+
+      if (name && name != "") {
+        message +=  "Name=" + name ;
+      }
+      if (email && email != "") {
+        message += " <br> Email=" + email;
+      }
+      if (dob && dob != "") {
+        message += " <br> DOB=" + dob;
+      }
+      if (phone && phone != "") {
+        message += " <br> Phone=" + phone;
+      }
+
+      this.$.result.innerHTML = message;
+
+    }
+
+    });
+
+    function getQueryString(key) {
+      return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+    }
+
+  </script>
+</dom-module>

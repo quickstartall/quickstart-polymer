@@ -1,0 +1,172 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<!-- import google-map element to be used in this page -->
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-directions.html">
+
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+ <!-- <link rel="import" href="../bower_components/iron-icons/iron-icons.html"> -->
+ <link rel="import" href="../bower_components/paper-item/paper-item.html">
+ <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+ <link rel="import" href="../bower_components/paper-input/paper-input.html">
+ <link rel="import" href="../bower_components/paper-card/paper-card.html">
+ <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+ <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view2">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+     /*style for google map*/
+    google-map {
+      height: 600px;
+    }
+
+    paper-card {
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
+      z-index: 1;
+    }
+
+    paper-tabs {
+      --paper-tabs-selection-bar-color: #0D47A1;
+      margin-top: 16px;
+    }
+    paper-tab {
+      --paper-tab-ink: #BBDEFB;
+    }
+
+    /* Other styles that make things more pleasant.
+       These could instead be added in styles.css since they
+       do not use any Polymer styling features. */
+    paper-tab iron-icon {
+      margin-right: 10px;
+    }
+    paper-tab.iron-selected {
+      background: rgb(66, 133, 244);
+      color: white;
+    }
+
+    </style>
+
+    <div class="card">
+      <!-- <div class="circle">1</div> -->
+      <!-- <h1>Google Map example</h1> -->
+      <p>This is an example which shows how to use google map element in poymer.</p>
+      <p>API key is mandatory to use this version of google-map. It can be generated using the link https://developers.google.com/maps/documentation/javascript/get-api-key
+      Click on the link API keys for the standard API. and follow the instruction==> Login with email/password and it will generate the api key</p>
+
+      <!-- <h2> Elelment <i> google-map </i> (latitude="37.77493" longitude="-122.41942") </h2> -->
+      <!-- API key is mandatory to use this version of google-map. It can be generated using the link https://developers.google.com/maps/documentation/javascript/get-api-key
+      Click on the link API keys for the standard API. and follow the instruction==> Login with email/password and it will generate the api key -->
+      <!-- <p><google-map latitude="37.77493" longitude="-122.41942"    api-key="AIzaSyB_1DnLNFvBmrytGfZOAPAVhu9KXrtaGPI"  >
+        <google-map-marker latitude="37.779" longitude="-122.3892"
+        title="San Frasisco Place!"></google-map-marker>
+
+      </google-map>
+
+      <google-map-directions    start-address="San Francisco" end-address="Mountain View"   api-key="AIzaSyB_1DnLNFvBmrytGfZOAPAVhu9KXrtaGPI">
+      </google-map-directions>
+
+      </p> -->
+
+      <!-- <p>
+        <template is="dom-bind">
+        <google-map-search map="[[map]]" query="domino's pizza near San Francisco, CA, United States" results="{{results}}">
+        </google-map-search>
+        <google-map map="{{map}}" latitude="37.779"
+                    longitude="-122.3892" api-key="AIzaSyB_1DnLNFvBmrytGfZOAPAVhu9KXrtaGPI">
+          <template is="dom-repeat" items="{{results}}" as="marker">
+            <google-map-marker latitude="{{marker.latitude}}"
+                               longitude="{{marker.longitude}}">
+              <h2>{{marker.name}}</h2>
+              <span>{{marker.formatted_address}}</span>
+            </google-map-marker>
+          </template>
+        </google-map>
+      </template>
+      </p> -->
+      <!-- <google-map latitude="39.7392"  longitude="-104.9903" >  </google-map> -->
+      <template is="dom-bind">
+
+        <google-map map="{{map}}" latitude="37.779"
+            longitude="-122.3892" api-key="AIzaSyB_1DnLNFvBmrytGfZOAPAVhu9KXrtaGPI"
+            >
+          <google-map-marker latitude="37.779" longitude="-122.3892"
+              title="San Fransisco!" draggable="true"></google-map-marker>
+        </google-map>
+
+        <google-map-directions map="{{map}}"
+            start-address="{{start}}"
+            end-address="{{end}}"
+            api-key="AIzaSyB_1DnLNFvBmrytGfZOAPAVhu9KXrtaGPI"
+            travel-mode="[[travelMode]]">
+          </google-map-directions>
+
+        <paper-card elevation="2">
+          <paper-icon-item>
+            <iron-icon icon="search" item-icon></iron-icon>
+            <paper-input label="Start address"
+                         value="{{start}}"></paper-input>
+          </paper-icon-item>
+          <paper-icon-item>
+            <iron-icon icon="search" item-icon></iron-icon>
+            <paper-input label="End address"
+                         value="{{end}}"></paper-input>
+          </paper-icon-item>
+
+          <!-- for tab -->
+          <paper-tabs selected="{{travelMode}}" attr-for-selected="label">
+            <paper-tab label="DRIVING">
+              <iron-icon icon="maps:directions-car"></iron-icon>
+              <span>DRIVING</span>
+            </paper-tab>
+            <paper-tab label="WALKING">
+              <iron-icon icon="maps:directions-walk"></iron-icon>
+              <span>WALKING</span>
+            </paper-tab>
+            <paper-tab label="BICYCLING">
+              <iron-icon icon="maps:directions-bike"></iron-icon>
+              <span>BICYCLING</span>
+            </paper-tab>
+            <paper-tab label="TRANSIT">
+              <iron-icon icon="maps:directions-transit"></iron-icon>
+              <span>TRANSIT</span>
+            </paper-tab>
+          </paper-tabs>
+
+        </paper-card>
+
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-view2',
+    });
+
+    var gMap = document.querySelector('google-map');
+     gMap.addEventListener('api-load', function(e) {
+       document.querySelector('google-map-directions').map = this.map;
+     });
+  </script>
+</dom-module>
